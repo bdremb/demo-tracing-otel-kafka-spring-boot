@@ -1,0 +1,30 @@
+
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  level:
+    root: info
+
+spring:
+  application:
+    name: kafka_producer_1
+server:
+  port: 8080
+
+management:
+  endpoints.web.exposure.include: "*"
+  tracing.sampling.probability: 1.0
+  metrics:
+    distribution:
+      percentiles-histogram:
+        fetch-commit: true
+        http:
+          server:
+            requests: true
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
+  appoptics:
+    metrics:
+      export:
+        enabled: false

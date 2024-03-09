@@ -1,0 +1,33 @@
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+  level:
+    root: info
+
+spring:
+  application:
+    name: kafka_consumer_2
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: ru.otel.demo
+server:
+  port: 8081
+
+management:
+  endpoints.web.exposure.include: "*"
+  tracing.sampling.probability: 1.0
+  metrics:
+    distribution:
+      percentiles-histogram:
+        fetch-commit: true
+        http:
+          server:
+            requests: true
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
+  appoptics:
+    metrics:
+      export:
+        enabled: false
